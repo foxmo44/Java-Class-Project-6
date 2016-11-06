@@ -14,6 +14,9 @@ import java.sql.Statement;
  */
 public class CpuModel
 {
+    /**
+     * The interface objects for the database
+     */
     private static Connection c;
     private static Statement s;
     private static ResultSet r;

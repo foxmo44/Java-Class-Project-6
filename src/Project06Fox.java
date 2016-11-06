@@ -1,3 +1,6 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
  * <h1>Advanced Java - Project06Fox</h1>
  * <h1>Project06Fox  Class</h1>
@@ -9,14 +12,30 @@
  *
  * @author Michael Fox
  */
-public class Project06Fox
+public class Project06Fox extends Application
 {
+    private static CpuController cpuController;
+
+    /**
+     * The main running function of the application
+     * @param args - command line arguments for the application
+     */
     public static void main(String [] args)
     {
         //Use the model view controller solution (MVC) model for the CPU interface to the db and viewing
-        CpuController cc = new CpuController();
+        cpuController = new CpuController();
 
+        launch( args );
 
-        System.out.println("Place Holder");
+    }
+
+    /**
+     * The start function used by JavaFx.  This will pass the mainstage to the view class
+     * @param mainStage - The main stage of the Java Fx GUI
+     */
+    //Needed for JavaFx
+    public void start( Stage mainStage )
+    {
+        cpuController.Start(mainStage);
     }
 }
