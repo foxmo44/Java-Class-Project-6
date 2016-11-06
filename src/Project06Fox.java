@@ -2,6 +2,7 @@
  * <h1>Advanced Java - Project06Fox</h1>
  * <h1>Project06Fox  Class</h1>
  * This is the class contains the main function that instantiates the controller object to get it all kicked off.
+ * This module is kept intentionally small with the functionally kept in the MVC
  * <p>
  * <b>Create Date: 11/1/2016</b>
  * <b>Due Date: 11/16/2016</b>
