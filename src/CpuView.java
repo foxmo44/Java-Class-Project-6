@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
@@ -28,6 +29,9 @@ public class CpuView
     private CpuController cpuController;
 
     private Label lblCpuList;
+    private Label lblPrice;
+    private Label lblPerformance;
+
     private ListView< CPU > listViewCpu;
 
     /**
@@ -53,25 +57,25 @@ public class CpuView
         mainStage.setScene( scene01 );
 
         lblCpuList = new Label( "CPU Information List" );
+        lblPrice = new Label("?????");
+        lblPerformance = new Label("?????");
 
         // The backing data structure for the ListView
         ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
         listViewCpu = new ListView< CPU >( list01 );
         listViewCpu.setPrefSize( 320, 160 );
-//
-//
-//        MultipleSelectionModel< Book > msm01 = listView01.getSelectionModel();
-//
-//        msm01.selectedItemProperty().addListener(
-//                (changedValue, oldValue, newValue) -> {
-//                    lbl01.setText( newValue.getTitle() );
-//                    lbl02.setText( Integer.toString( newValue.getPageCount() ) );
-//                    lbl03.setText( newValue.getPubDate().toString() );
-//                    lbl04.setText( Integer.toString( newValue.getID() ) );
-//                }
-//        );
 
-        root.getChildren().addAll( lblCpuList, listViewCpu);
+        MultipleSelectionModel< CPU > msm01 = listViewCpu.getSelectionModel();
+
+        //Capture the selection and alter the labels
+        msm01.selectedItemProperty().addListener(
+                (changedValue, oldValue, newValue) -> {
+                    lblPrice.setText( Double.toString(newValue.getPrice()) );
+                    lblPerformance.setText(Double.toString(newValue.getPerformance()));
+                }
+        );
+
+        root.getChildren().addAll( lblCpuList, listViewCpu, lblPerformance, lblPrice);
         mainStage.show();
     }
 }
