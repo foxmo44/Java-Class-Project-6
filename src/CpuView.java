@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
@@ -31,6 +32,8 @@ public class CpuView
     private Label lblCpuList;
     private Label lblPrice;
     private Label lblPerformance;
+    private TextField txtPrice;
+    private TextField txtPerformance;
 
     private ListView< CPU > listViewCpu;
 
@@ -57,8 +60,10 @@ public class CpuView
         mainStage.setScene( scene01 );
 
         lblCpuList = new Label( "CPU Information List" );
-        lblPrice = new Label("?????");
-        lblPerformance = new Label("?????");
+        lblPrice = new Label("Price");
+        txtPrice = new TextField("?????");
+        lblPerformance = new Label("Performance");
+        txtPerformance = new TextField("?????");
 
         // The backing data structure for the ListView
         ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
@@ -70,12 +75,12 @@ public class CpuView
         //Capture the selection and alter the labels
         msm01.selectedItemProperty().addListener(
                 (changedValue, oldValue, newValue) -> {
-                    lblPrice.setText( Double.toString(newValue.getPrice()) );
-                    lblPerformance.setText(Double.toString(newValue.getPerformance()));
+                    txtPrice.setText( Double.toString(newValue.getPrice()) );
+                    txtPerformance.setText(Double.toString(newValue.getPerformance()));
                 }
         );
 
-        root.getChildren().addAll( lblCpuList, listViewCpu, lblPerformance, lblPrice);
+        root.getChildren().addAll( lblCpuList, listViewCpu, lblPerformance, txtPerformance, lblPrice,txtPrice);
         mainStage.show();
     }
 }
