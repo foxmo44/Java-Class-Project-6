@@ -119,8 +119,9 @@ public class CPU
      */
     public String toString()
     {
-        return String.format("[%b]\t%s\t\t[%5.2f]\t[%5.2f]\n", m_bValid, m_strCPUName, m_dPerformance, m_dPrice);
+        //return String.format("[%b]\t%s\t\t[%5.2f]\t[%5.2f]\n", m_bValid, m_strCPUName, m_dPerformance, m_dPrice);
         //return String.format("%s\n", m_strCPULine); //Just return the original line
+        return String.format("%s", m_strCPUName);
     }
 
     /**

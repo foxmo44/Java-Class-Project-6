@@ -1,0 +1,12 @@
+> mysql.exe -h localhost -u root -p
+
+mysql> create database CpuDb;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use CpuDb;
+Database changed
+
+mysql> create table CpuTable( id int not null auto_increment primary key, cpuname varchar( 32 ) not null, performance int, price float );
+Query OK, 0 rows affected (0.53 sec)
+
+mysql>
