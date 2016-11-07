@@ -28,6 +28,6 @@ public class CpuController
      */
     void Start(Stage mainStage)
     {
-        cpuView.Start(mainStage);
+        cpuView.Start(mainStage, CpuModel.getAllCpu());
     }
 }

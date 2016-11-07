@@ -33,7 +33,6 @@ public class Project06Fox extends Application
      * The start function used by JavaFx.  This will pass the mainstage to the view class
      * @param mainStage - The main stage of the Java Fx GUI
      */
-    //Needed for JavaFx
     public void start( Stage mainStage )
     {
         cpuController.Start(mainStage);
