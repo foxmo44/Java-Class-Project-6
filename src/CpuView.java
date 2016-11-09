@@ -34,6 +34,8 @@ public class CpuView
     private Label lblPerformance;
     private TextField txtPrice;
     private TextField txtPerformance;
+    private Label lblCpuName;
+    private TextField txtCpuName;
 
     private ListView< CPU > listViewCpu;
 
@@ -60,10 +62,12 @@ public class CpuView
         mainStage.setScene( scene01 );
 
         lblCpuList = new Label( "CPU Information List" );
+        lblCpuName = new Label("CPU Name");
+        txtCpuName = new TextField("");
         lblPrice = new Label("Price");
-        txtPrice = new TextField("?????");
+        txtPrice = new TextField("");
         lblPerformance = new Label("Performance");
-        txtPerformance = new TextField("?????");
+        txtPerformance = new TextField("");
 
         // The backing data structure for the ListView
         ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
@@ -77,10 +81,11 @@ public class CpuView
                 (changedValue, oldValue, newValue) -> {
                     txtPrice.setText( Double.toString(newValue.getPrice()) );
                     txtPerformance.setText(Double.toString(newValue.getPerformance()));
+                    txtCpuName.setText((newValue.getCpuName()));
                 }
         );
 
-        root.getChildren().addAll( lblCpuList, listViewCpu, lblPerformance, txtPerformance, lblPrice,txtPrice);
+        root.getChildren().addAll( lblCpuList, listViewCpu, lblCpuName, txtCpuName, lblPerformance, txtPerformance, lblPrice,txtPrice);
         mainStage.show();
     }
 }

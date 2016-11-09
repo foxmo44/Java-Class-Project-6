@@ -18,7 +18,7 @@ public class CPU
     private double m_dPrice;
     private double m_dValue; //Performance / Price
     private static final double NA_VALUE = 9999.99;
-
+    private int m_iIdentifier = -1;
 
     /**
      * @param strCPULine is the CPU line from the file
@@ -31,17 +31,19 @@ public class CPU
 
     /**
      * Constructor to be used when the fields are already known
+     * @param iIdentifier - CPU identifier
      * @param strCPUName - name of the CPU
      * @param iPerformance - performance factor of the CPU
      * @param dPrice - price of the CPU
      */
-    public CPU(String strCPUName, int iPerformance, double dPrice)
+    public CPU(int iIdentifier, String strCPUName, int iPerformance, double dPrice)
     {
         m_strCPUName = strCPUName;
         m_dPerformance = (double)iPerformance;
         m_dPrice = dPrice;
         m_dValue = m_dPerformance / m_dPrice; //Performance / Price
         m_bValid = true;
+        m_iIdentifier = iIdentifier;
     }
 
     /**
