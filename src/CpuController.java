@@ -30,4 +30,15 @@ public class CpuController
     {
         cpuView.Start(mainStage, CpuModel.getAllCpu());
     }
+
+    /**
+     * Save to the model
+     * @param strCpuName
+     * @param iPerformance
+     * @param dPrice
+     */
+    void Save(String strCpuName, int iPerformance, double dPrice)
+    {
+        CpuModel.save(strCpuName, iPerformance, dPrice);
+    }
 }

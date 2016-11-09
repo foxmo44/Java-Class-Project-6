@@ -3,10 +3,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
@@ -29,13 +26,14 @@ public class CpuView
 {
     private CpuController cpuController;
 
-    private Label lblCpuList;
-    private Label lblPrice;
-    private Label lblPerformance;
-    private TextField txtPrice;
-    private TextField txtPerformance;
-    private Label lblCpuName;
-    private TextField txtCpuName;
+    private Label       lblCpuList;
+    private Label       lblPrice;
+    private Label       lblPerformance;
+    private TextField   txtPrice;
+    private TextField   txtPerformance;
+    private Label       lblCpuName;
+    private TextField   txtCpuName;
+    private Button      btnSave;
 
     private ListView< CPU > listViewCpu;
 
@@ -68,6 +66,10 @@ public class CpuView
         txtPrice = new TextField("");
         lblPerformance = new Label("Performance");
         txtPerformance = new TextField("");
+        btnSave = new Button( "Save" );
+
+        //Set the button handler for the Save pushbutton
+        btnSave.setOnAction( (wombat) -> { SaveButtonHandler(); } );
 
         // The backing data structure for the ListView
         ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
@@ -85,7 +87,47 @@ public class CpuView
                 }
         );
 
-        root.getChildren().addAll( lblCpuList, listViewCpu, lblCpuName, txtCpuName, lblPerformance, txtPerformance, lblPrice,txtPrice);
+        //Add the controls to the dialog
+        root.getChildren().addAll(  lblCpuList,
+                                    listViewCpu,
+                                    lblCpuName,
+                                    txtCpuName,
+                                    lblPerformance,
+                                    txtPerformance,
+                                    lblPrice,
+                                    txtPrice,
+                                    btnSave);
         mainStage.show();
     }
+
+    void UpdateCpuList()
+    {
+        // The backing data structure for the ListView
+//        ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
+//        listViewCpu = new ListView< CPU >( list01 );
+//        listViewCpu.setPrefSize( 320, 160 );
+
+    }
+
+
+    /**
+     * Handle the Save push button hit
+     */
+    private void SaveButtonHandler()
+    {
+        //Save the CPU information via the controller
+        if((txtCpuName.getText().isEmpty() == false) &&
+           (txtPerformance.getText().isEmpty() == false) &&
+           (txtPrice.getText().isEmpty() == false))
+        {
+            cpuController.Save( txtCpuName.getText(),
+                                Integer.parseInt(txtPerformance.getText()),
+                                Double.parseDouble(txtPrice.getText()));
+        }
+
+        UpdateCpuList();
+
+        //System.out.printf("Save [%s][%s][%s]\n", txtCpuName.getText(), txtPerformance.getText(), txtPrice.getText());
+    }
 }
+
