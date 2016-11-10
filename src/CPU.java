@@ -14,7 +14,7 @@ public class CPU
     private boolean m_bValid;
     private String m_strCPULine;
     private String m_strCPUName;
-    private double m_dPerformance;
+    private int m_iPerformance;
     private double m_dPrice;
     private double m_dValue; //Performance / Price
     private static final double NA_VALUE = 9999.99;
@@ -39,9 +39,9 @@ public class CPU
     public CPU(int iIdentifier, String strCPUName, int iPerformance, double dPrice)
     {
         m_strCPUName = strCPUName;
-        m_dPerformance = (double)iPerformance;
+        m_iPerformance = iPerformance;
         m_dPrice = dPrice;
-        m_dValue = m_dPerformance / m_dPrice; //Performance / Price
+        m_dValue = m_iPerformance / m_dPrice; //Performance / Price
         m_bValid = true;
         m_iIdentifier = iIdentifier;
     }
@@ -75,11 +75,11 @@ public class CPU
         {
             strTemp = tokens[1];
             strNumeric = strTemp.replaceAll("[^0-9.]+", "");  //Get rid of non digit characters
-            m_dPerformance = Double.parseDouble(strNumeric);
+            m_iPerformance = Integer.parseInt(strNumeric);
         }
         catch(NumberFormatException ex)
         {
-            m_dPerformance = NA_VALUE;
+            m_iPerformance = (int)NA_VALUE;
             bRetValue = false;
         }
 
@@ -99,7 +99,7 @@ public class CPU
         //If we have valid Performance and Price values then return the calculated value otherwise set to zero
         if(bRetValue)
         {
-            m_dValue = m_dPerformance / m_dPrice;
+            m_dValue = m_iPerformance / m_dPrice;
         }
         else
         {
@@ -130,7 +130,7 @@ public class CPU
      * Getter
      * @return the performance as an double
      */
-    public double getPerformance(){return(m_dPerformance);};
+    public int getPerformance(){return(m_iPerformance);};
 
 
     /**

@@ -1,5 +1,7 @@
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * <h1>Advanced Java - Project06Fox</h1>
  * <h1>CpuController  Class</h1>
@@ -28,7 +30,7 @@ public class CpuController
      */
     void Start(Stage mainStage)
     {
-        cpuView.Start(mainStage, CpuModel.getAllCpu());
+        cpuView.Start(mainStage);
     }
 
     /**
@@ -40,5 +42,13 @@ public class CpuController
     void Save(String strCpuName, int iPerformance, double dPrice)
     {
         CpuModel.save(strCpuName, iPerformance, dPrice);
+    }
+
+    /**
+     * Get the latest cpu list from the Model
+     */
+    ArrayList< CPU > getCpuList()
+    {
+        return (CpuModel.getAllCpu());
     }
 }

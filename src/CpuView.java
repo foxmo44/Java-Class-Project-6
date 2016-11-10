@@ -51,7 +51,7 @@ public class CpuView
      * This is the primary class for setting up the Java Fx GUI for the View class
      * @param mainStage - main stage of the Java Fx GUI
      */
-    void Start(Stage mainStage, ArrayList< CPU > cpuList)
+    void Start(Stage mainStage)
     {
         mainStage.setTitle( "Fox CPU Viewer" );
         FlowPane root = new FlowPane( Orientation.VERTICAL, 20, 20 );
@@ -71,18 +71,25 @@ public class CpuView
         //Set the button handler for the Save pushbutton
         btnSave.setOnAction( (wombat) -> { SaveButtonHandler(); } );
 
-        // The backing data structure for the ListView
-        ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
-        listViewCpu = new ListView< CPU >( list01 );
+        listViewCpu = new ListView< CPU >(  );
         listViewCpu.setPrefSize( 320, 160 );
+
+        // Update the CPU list
+        UpdateCpuList();
 
         MultipleSelectionModel< CPU > msm01 = listViewCpu.getSelectionModel();
 
         //Capture the selection and alter the labels
         msm01.selectedItemProperty().addListener(
-                (changedValue, oldValue, newValue) -> {
-                    txtPrice.setText( Double.toString(newValue.getPrice()) );
-                    txtPerformance.setText(Double.toString(newValue.getPerformance()));
+                (changedValue, oldValue, newValue) ->
+                {
+
+                    String strPrice = Double.toString(newValue.getPrice());
+                    txtPrice.setText(strPrice);
+
+                    String strPerformance = Integer.toString(newValue.getPerformance());
+                    txtPerformance.setText(strPerformance);
+
                     txtCpuName.setText((newValue.getCpuName()));
                 }
         );
@@ -102,10 +109,18 @@ public class CpuView
 
     void UpdateCpuList()
     {
+        ArrayList< CPU > cpuList = new ArrayList<>();
+
+        cpuList = cpuController.getCpuList();
+
+        System.out.printf("The list has %d\n", cpuList.size());
+
         // The backing data structure for the ListView
-//        ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
-//        listViewCpu = new ListView< CPU >( list01 );
-//        listViewCpu.setPrefSize( 320, 160 );
+        ObservableList< CPU > list01 = FXCollections.observableArrayList( cpuList );
+
+        listViewCpu.getItems().clear();
+        listViewCpu.setItems(list01);
+        listViewCpu.refresh();
 
     }
 
@@ -115,19 +130,24 @@ public class CpuView
      */
     private void SaveButtonHandler()
     {
+        int     iPerformance;
+        double  dPrice;
+        String  strCpuName;
+
         //Save the CPU information via the controller
         if((txtCpuName.getText().isEmpty() == false) &&
            (txtPerformance.getText().isEmpty() == false) &&
            (txtPrice.getText().isEmpty() == false))
         {
-            cpuController.Save( txtCpuName.getText(),
-                                Integer.parseInt(txtPerformance.getText()),
-                                Double.parseDouble(txtPrice.getText()));
+            iPerformance = Integer.parseInt(txtPerformance.getText());
+            dPrice = Double.parseDouble(txtPrice.getText());
+            strCpuName = txtCpuName.getText();
+
+            cpuController.Save( strCpuName, iPerformance, dPrice);
+
+            UpdateCpuList();
         }
 
-        UpdateCpuList();
-
-        //System.out.printf("Save [%s][%s][%s]\n", txtCpuName.getText(), txtPerformance.getText(), txtPrice.getText());
     }
 }
 
