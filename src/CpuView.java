@@ -83,14 +83,17 @@ public class CpuView
         msm01.selectedItemProperty().addListener(
                 (changedValue, oldValue, newValue) ->
                 {
+                    //If a valid CPU object then update the text boxes
+                    if(newValue.getValid() == true)
+                    {
+                        String strPrice = String.format("%5.2f", newValue.getPrice());
+                        txtPrice.setText(strPrice);
 
-                    String strPrice = Double.toString(newValue.getPrice());
-                    txtPrice.setText(strPrice);
+                        String strPerformance = Integer.toString(newValue.getPerformance());
+                        txtPerformance.setText(strPerformance);
 
-                    String strPerformance = Integer.toString(newValue.getPerformance());
-                    txtPerformance.setText(strPerformance);
-
-                    txtCpuName.setText((newValue.getCpuName()));
+                        txtCpuName.setText((newValue.getCpuName()));
+                    }
                 }
         );
 
@@ -107,6 +110,9 @@ public class CpuView
         mainStage.show();
     }
 
+    /**
+     * Update the list view with the data
+     */
     void UpdateCpuList()
     {
         ArrayList< CPU > cpuList = new ArrayList<>();
@@ -143,9 +149,9 @@ public class CpuView
             dPrice = Double.parseDouble(txtPrice.getText());
             strCpuName = txtCpuName.getText();
 
-            cpuController.Save( strCpuName, iPerformance, dPrice);
+            cpuController.Save( strCpuName, iPerformance, dPrice);  //Save to the db
 
-            UpdateCpuList();
+            UpdateCpuList();    //based on the database update the ListView
         }
 
     }
