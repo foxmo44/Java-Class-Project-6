@@ -156,4 +156,9 @@ public class CPU
      * @return if the cpu's line was parsed with all valid values for the fields or not
      */
     public boolean getValid(){return(m_bValid);};
+
+    /**
+     * @return return the identifier of the CPU
+     */
+    public int getIdentifier(){return(m_iIdentifier);};
 }

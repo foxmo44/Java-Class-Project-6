@@ -6,10 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
-import static javafx.application.Application.launch;
-import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 /**
@@ -33,7 +29,10 @@ public class CpuView
     private TextField   txtPerformance;
     private Label       lblCpuName;
     private TextField   txtCpuName;
+    private Label       lblCpuIndex;
+    private TextField   txtCpuIndex;
     private Button      btnSave;
+    private Button      btnDelete;
 
     private ListView< CPU > listViewCpu;
 
@@ -56,10 +55,12 @@ public class CpuView
         mainStage.setTitle( "Fox CPU Viewer" );
         FlowPane root = new FlowPane( Orientation.VERTICAL, 20, 20 );
         root.setAlignment( Pos.CENTER );
-        Scene scene01 = new Scene( root, 500, 500 );
+        Scene scene01 = new Scene( root, 500, 700 );
         mainStage.setScene( scene01 );
 
         lblCpuList = new Label( "CPU Information List" );
+        lblCpuIndex = new Label("CPU Index");
+        txtCpuIndex = new TextField("");
         lblCpuName = new Label("CPU Name");
         txtCpuName = new TextField("");
         lblPrice = new Label("Price");
@@ -67,9 +68,11 @@ public class CpuView
         lblPerformance = new Label("Performance");
         txtPerformance = new TextField("");
         btnSave = new Button( "Save" );
+        btnDelete = new Button("Delete");
 
         //Set the button handler for the Save pushbutton
         btnSave.setOnAction( (wombat) -> { SaveButtonHandler(); } );
+        btnDelete.setOnAction((wombat) -> {DeleteButtonHandler(); });
 
         listViewCpu = new ListView< CPU >(  );
         listViewCpu.setPrefSize( 320, 160 );
@@ -83,31 +86,47 @@ public class CpuView
         msm01.selectedItemProperty().addListener(
                 (changedValue, oldValue, newValue) ->
                 {
-                    //If a valid CPU object then update the text boxes
-                    if(newValue.getValid() == true)
-                    {
-                        String strPrice = String.format("%5.2f", newValue.getPrice());
-                        txtPrice.setText(strPrice);
+                    UpdateCpuTextboxes(newValue);
 
-                        String strPerformance = Integer.toString(newValue.getPerformance());
-                        txtPerformance.setText(strPerformance);
-
-                        txtCpuName.setText((newValue.getCpuName()));
-                    }
                 }
         );
 
         //Add the controls to the dialog
         root.getChildren().addAll(  lblCpuList,
                                     listViewCpu,
+                                    lblCpuIndex,
+                                    txtCpuIndex,
                                     lblCpuName,
                                     txtCpuName,
                                     lblPerformance,
                                     txtPerformance,
                                     lblPrice,
                                     txtPrice,
-                                    btnSave);
+                                    btnSave,
+                                    btnDelete);
         mainStage.show();
+    }
+
+    /**
+     * Update the CPU text boxes
+     * @param cpu - Input CPU object
+     */
+    void UpdateCpuTextboxes(CPU cpu)
+    {
+        //If a valid CPU object then update the text boxes
+        if(cpu.getValid() == true)
+        {
+            txtCpuIndex.setText(Integer.toString(cpu.getIdentifier()));
+
+            String strPrice = String.format("%5.2f", cpu.getPrice());
+            txtPrice.setText(strPrice);
+
+            String strPerformance = Integer.toString(cpu.getPerformance());
+            txtPerformance.setText(strPerformance);
+
+            txtCpuName.setText((cpu.getCpuName()));
+        }
+
     }
 
     /**
@@ -153,6 +172,14 @@ public class CpuView
 
             UpdateCpuList();    //based on the database update the ListView
         }
+
+    }
+
+    /**
+     * If the index is valid then delete the record from the database
+     */
+    private void DeleteButtonHandler()
+    {
 
     }
 }
