@@ -33,6 +33,7 @@ public class CpuView
     private TextField   txtCpuIndex;
     private Button      btnSave;
     private Button      btnDelete;
+    private Label       lblStatus;
 
     private ListView< CPU > listViewCpu;
 
@@ -69,6 +70,7 @@ public class CpuView
         txtPerformance = new TextField("");
         btnSave = new Button( "Save" );
         btnDelete = new Button("Delete");
+        lblStatus = new Label("");
 
         //Set the button handler for the Save pushbutton
         btnSave.setOnAction( (wombat) -> { SaveButtonHandler(); } );
@@ -103,7 +105,8 @@ public class CpuView
                                     lblPrice,
                                     txtPrice,
                                     btnSave,
-                                    btnDelete);
+                                    btnDelete,
+                                    lblStatus);
         mainStage.show();
     }
 
@@ -115,9 +118,6 @@ public class CpuView
     {
         if(cpu != null)
         {
-            //System.out.printf("Updating with %d\n", cpu.getIdentifier());
-            System.out.println("UpdateCpuTextboxes");
-
             //If a valid CPU object then update the text boxes
             if (cpu.getValid() == true)
             {
@@ -171,6 +171,7 @@ public class CpuView
         int     iPerformance;
         double  dPrice;
         String  strCpuName;
+        String  strStatus;
 
         //Save the CPU information via the controller
         if((txtCpuName.getText().isEmpty() == false) &&
@@ -184,6 +185,13 @@ public class CpuView
             cpuController.Save( strCpuName, iPerformance, dPrice);  //Save to the db
 
             UpdateCpuList();    //based on the database update the ListView
+
+            strStatus = String.format("Saved %s", strCpuName);
+            lblStatus.setText(strStatus);
+        }
+        else
+        {
+            lblStatus.setText("All fields must be filled in before saving");
         }
 
     }
@@ -194,6 +202,7 @@ public class CpuView
     private void DeleteButtonHandler()
     {
         int iIdentifier;
+        String strStatus;
 
         if(txtCpuIndex.getText().isEmpty() == false)
         {
@@ -202,6 +211,14 @@ public class CpuView
             cpuController.Delete(iIdentifier);
 
             UpdateCpuList();
+
+            strStatus = String.format("Deleted %s", txtCpuName.getText());
+            lblStatus.setText(strStatus);
+
+        }
+        else
+        {
+            lblStatus.setText("Could not delete the record");
         }
     }
 }
