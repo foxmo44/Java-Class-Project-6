@@ -131,7 +131,34 @@ public class CpuModel
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param iIdentifier - identifier of record to delete
+     */
+    public static void delete(int iIdentifier)
+    {
+        try
+        {
+            if (bConnected == false)
+            {
+                bConnected = Connect("cpudb", "tcc2016", "tcc2016");
+            }
+
+            s = c.createStatement();
+
+            //System.out.println(strSql);
+            s.execute("delete from cputable where id = " + iIdentifier );
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
 }
+
+
 
 //    // Creates a new book in the database.
 //    public static void save( String t, int pc, String pd, int g ){

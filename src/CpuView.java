@@ -83,12 +83,12 @@ public class CpuView
         MultipleSelectionModel< CPU > msm01 = listViewCpu.getSelectionModel();
 
         //Capture the selection and alter the labels
-        msm01.selectedItemProperty().addListener(
-                (changedValue, oldValue, newValue) ->
-                {
-                    UpdateCpuTextboxes(newValue);
-
-                }
+        msm01.selectedItemProperty().addListener
+        (
+            (changedValue, oldValue, newValue) ->
+            {
+                UpdateCpuTextboxes(newValue);
+            }
         );
 
         //Add the controls to the dialog
@@ -113,18 +113,31 @@ public class CpuView
      */
     void UpdateCpuTextboxes(CPU cpu)
     {
-        //If a valid CPU object then update the text boxes
-        if(cpu.getValid() == true)
+        if(cpu != null)
         {
-            txtCpuIndex.setText(Integer.toString(cpu.getIdentifier()));
+            //System.out.printf("Updating with %d\n", cpu.getIdentifier());
+            System.out.println("UpdateCpuTextboxes");
 
-            String strPrice = String.format("%5.2f", cpu.getPrice());
-            txtPrice.setText(strPrice);
+            //If a valid CPU object then update the text boxes
+            if (cpu.getValid() == true)
+            {
+                txtCpuIndex.setText(Integer.toString(cpu.getIdentifier()));
 
-            String strPerformance = Integer.toString(cpu.getPerformance());
-            txtPerformance.setText(strPerformance);
+                String strPrice = String.format("%5.2f", cpu.getPrice());
+                txtPrice.setText(strPrice);
 
-            txtCpuName.setText((cpu.getCpuName()));
+                String strPerformance = Integer.toString(cpu.getPerformance());
+                txtPerformance.setText(strPerformance);
+
+                txtCpuName.setText((cpu.getCpuName()));
+            }
+        }
+        else
+        {
+            txtCpuIndex.setText("");
+            txtPrice.setText("");
+            txtCpuName.setText("");
+            txtPerformance.setText("");
         }
 
     }
@@ -180,7 +193,16 @@ public class CpuView
      */
     private void DeleteButtonHandler()
     {
+        int iIdentifier;
 
+        if(txtCpuIndex.getText().isEmpty() == false)
+        {
+            iIdentifier = Integer.parseInt(txtCpuIndex.getText());
+
+            cpuController.Delete(iIdentifier);
+
+            UpdateCpuList();
+        }
     }
 }
 

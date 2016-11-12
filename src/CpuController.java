@@ -39,9 +39,14 @@ public class CpuController
      * @param iPerformance
      * @param dPrice
      */
-    void Save(String strCpuName, int iPerformance, double dPrice)
+    public void Save(String strCpuName, int iPerformance, double dPrice)
     {
         CpuModel.save(strCpuName, iPerformance, dPrice);
+    }
+
+   public void Delete(int iIdentifier)
+    {
+        CpuModel.delete(iIdentifier);
     }
 
     /**
