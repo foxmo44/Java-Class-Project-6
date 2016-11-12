@@ -60,6 +60,7 @@ public class CpuModel
             {
                 cpuList.add(new CPU(r.getInt("id"), r.getString("cpuname"), r.getInt("performance"), r.getFloat("price")));
             }
+
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -99,14 +100,15 @@ public class CpuModel
 
 
     /**
-     * Save the cpu information into the database
+     * insert the cpu information into the database
      * @param strCpuName - name of the CPU
      * @param iPerformance - Performance rating of the CPU
      * @param dPrice - the price of the CPU
      */
-    public static void save(String strCpuName, int iPerformance, double dPrice)
+    public static boolean insert(String strCpuName, int iPerformance, double dPrice)
     {
         String strSql;
+        boolean bRetValue = false;
 
         try
         {
@@ -123,20 +125,25 @@ public class CpuModel
                     + dPrice + ")";
 
             //System.out.println(strSql);
-            s.execute(strSql);
+            bRetValue = s.execute(strSql);
 
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+
+        return(bRetValue);
     }
 
     /**
+     * Delete the record associated with the input identifier
      * @param iIdentifier - identifier of record to delete
      */
-    public static void delete(int iIdentifier)
+    public static boolean delete(int iIdentifier)
     {
+        boolean bRetValue = false;
+
         try
         {
             if (bConnected == false)
@@ -147,7 +154,7 @@ public class CpuModel
             s = c.createStatement();
 
             //System.out.println(strSql);
-            s.execute("delete from cputable where id = " + iIdentifier );
+            bRetValue = s.execute("delete from cputable where id = " + iIdentifier );
 
         }
         catch(Exception e)
@@ -155,66 +162,87 @@ public class CpuModel
             e.printStackTrace();
         }
 
+        return(bRetValue);
+    }
+
+    /**
+     * If the identifier exists then up date the record with the name, performance, and price
+     * @param iIdentifier - identifier in the database
+     * @param strCpuName - Name of the CPU
+     * @param iPerformance - Performance of the CPU
+     * @param dPrice - Price of the CPU
+     * @return - Return true if successful
+     */
+    public static boolean update(int iIdentifier, String strCpuName, int iPerformance, double dPrice)
+    {
+        boolean bRetValue = false;
+        String strSql;
+
+        try
+        {
+            if (bConnected == false)
+            {
+                bConnected = Connect("cpudb", "tcc2016", "tcc2016");
+            }
+
+            s = c.createStatement();
+
+            strSql = String.format("update cputable set cpuname = '" + strCpuName
+                                    + "', performance =" + iPerformance
+                                    + ", price = " + dPrice
+                                    + " where id = "  + iIdentifier );
+
+            System.out.printf("update with SQL [" + strSql + "]\n");
+
+            bRetValue = s.execute(strSql);
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return(bRetValue);
+    }
+
+    /**
+     * Return an object CPU that is associated with the identifier in the database
+     * @param iIdentifier
+     * @return - CPU object that was filled or null if not filled
+     */
+    public static CPU getCpu(int iIdentifier)
+    {
+        boolean bStatus;
+        CPU     retValue = null;
+        String  strSql;
+
+        try
+        {
+            if (bConnected == false)
+            {
+                bConnected = Connect("cpudb", "tcc2016", "tcc2016");
+            }
+
+            s = c.createStatement();
+
+            strSql = String.format( "SELECT * from cputable where id = "   + iIdentifier);
+
+            System.out.printf("getCPU with SQL [" + strSql + "]\n");
+
+            r = s.executeQuery(strSql);
+
+            r.next();
+
+            retValue = new CPU(r.getInt("id"), r.getString("cpuname"), r.getInt("performance"), r.getFloat("price"));
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return(retValue);
     }
 }
 
 
-
-//    // Creates a new book in the database.
-//    public static void save( String t, int pc, String pd, int g ){
-//        try{
-//            c = DriverManager.getConnection( "jdbc:mysql://localhost/books2016", "tcc2016", "tcc2016" );
-//            s = c.createStatement();
-//            s.execute( "insert into book (title,pagecount,pubdate,genre) values ('"
-//                    + t + "',"
-//                    + pc + ",'"
-//                    + pd + "',"
-//                    + g + ")" );
-//        }catch( Exception e ){
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Deletes a book from the database
-//    public static void delete( int id ){
-//        try{
-//            c = DriverManager.getConnection( "jdbc:mysql://localhost/books2016", "tcc2016", "tcc2016" );
-//            s = c.createStatement();
-//            s.execute( "delete from book where id = " + id );
-//        }catch( Exception e ){
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Updates an existing book in the database.
-//    public static void update( int id, String t, int pc, String pd, int g ){
-//        try{
-//            c = DriverManager.getConnection( "jdbc:mysql://localhost/books2016", "tcc2016", "tcc2016" );
-//            s = c.createStatement();
-//            s.execute( "update book set title = '"
-//                    + t + "', pagecount ="
-//                    + pc + ", pubdate ='"
-//                    + pd + "', genre ="
-//                    + g + " where id = "
-//                    + id );
-//        }catch( Exception e ){
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Returns a Book for a given ID.
-//    // used by both edit and get details for a given book
-//    public static Book getBookByID( int id ){
-//        Book newBook = null;
-//        try{
-//            c = DriverManager.getConnection( "jdbc:mysql://localhost/books2016", "tcc2016", "tcc2016" );
-//            s = c.createStatement();
-//            r = s.executeQuery( "Select id, title, pagecount, pubdate, genre from book where id = " + id );
-//            r.next();
-//            newBook = new Book( r.getInt( 1 ), r.getString( 2 ), r.getInt( 3 ), r.getDate( 4 ), r.getInt( 5 ) );
-//        }catch( Exception e ){
-//            e.printStackTrace();
-//        }
-//        return newBook;
-//    }
-//

@@ -35,18 +35,45 @@ public class CpuController
 
     /**
      * Save to the model
-     * @param strCpuName
-     * @param iPerformance
-     * @param dPrice
+     * @param strCpuName - name of the CPU
+     * @param iPerformance - performance of the CPU
+     * @param dPrice - price of the CPU
      */
-    public void Save(String strCpuName, int iPerformance, double dPrice)
+    public boolean Save(String strCpuName, int iPerformance, double dPrice)
     {
-        CpuModel.save(strCpuName, iPerformance, dPrice);
+        return (CpuModel.insert(strCpuName, iPerformance, dPrice));
     }
 
-   public void Delete(int iIdentifier)
+    /**
+     * Delete a record from the database
+     * @param iIdentifier - Identifier of the record to delete
+     */
+   public boolean Delete(int iIdentifier)
     {
-        CpuModel.delete(iIdentifier);
+        return (CpuModel.delete(iIdentifier));
+    }
+
+    /**
+     * Return the object associated with the identifier
+     * @param iIdentifier - Identifier of the record to return
+     * @return object contain the record's data
+     */
+    public CPU getCpu(int iIdentifier)
+    {
+        return(CpuModel.getCpu(iIdentifier));
+    }
+
+    /**
+     * Given the record identifier, update the fields for that record
+     * @param iIdentifier - identifier of the record to update
+     * @param strCpuName - name of the CPU
+     * @param iPerformance - performance of the CPU
+     * @param dPrice - price of the CPU
+     * @return
+     */
+    public boolean Update(int iIdentifier, String strCpuName, int iPerformance, double dPrice)
+    {
+        return (CpuModel.update(iIdentifier, strCpuName, iPerformance, dPrice));
     }
 
     /**

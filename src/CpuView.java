@@ -169,20 +169,50 @@ public class CpuView
     private void SaveButtonHandler()
     {
         int     iPerformance;
+        int     iIdentifier = 0;
         double  dPrice;
         String  strCpuName;
         String  strStatus;
+        CPU     cpu;
 
         //Save the CPU information via the controller
         if((txtCpuName.getText().isEmpty() == false) &&
            (txtPerformance.getText().isEmpty() == false) &&
            (txtPrice.getText().isEmpty() == false))
         {
+            //Get the identifier number
+            if(txtCpuIndex.getText().isEmpty() == false)
+            {
+                iIdentifier = Integer.parseInt(txtCpuIndex.getText());
+            }
+
+            //Grab the data from the rest of the text fields
             iPerformance = Integer.parseInt(txtPerformance.getText());
             dPrice = Double.parseDouble(txtPrice.getText());
             strCpuName = txtCpuName.getText();
 
-            cpuController.Save( strCpuName, iPerformance, dPrice);  //Save to the db
+            //Determine if we are updating or creating a new record with the save method
+            if(iIdentifier > 0)
+            {
+                //Does the record already exist
+                cpu = cpuController.getCpu(iIdentifier);
+
+                if(cpu != null)
+                {
+                    //The record does indeed already exist so update it
+                    cpuController.Update(iIdentifier, strCpuName, iPerformance, dPrice);
+                }
+                else
+                {
+                    //Could not find the record so go ahead and save it as a new record
+                    cpuController.Save(strCpuName, iPerformance, dPrice);  //Save to the db
+                }
+            }
+            else
+            {
+                //Perform the save operation
+                cpuController.Save(strCpuName, iPerformance, dPrice);  //Save to the db
+            }
 
             UpdateCpuList();    //based on the database update the ListView
 
