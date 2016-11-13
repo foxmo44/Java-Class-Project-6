@@ -104,6 +104,7 @@ public class CpuModel
      * @param strCpuName - name of the CPU
      * @param iPerformance - Performance rating of the CPU
      * @param dPrice - the price of the CPU
+     * @return true if the insert was completed
      */
     public static boolean insert(String strCpuName, int iPerformance, double dPrice)
     {
@@ -139,6 +140,7 @@ public class CpuModel
     /**
      * Delete the record associated with the input identifier
      * @param iIdentifier - identifier of record to delete
+     * @return true if the delete was successful
      */
     public static boolean delete(int iIdentifier)
     {
@@ -207,7 +209,7 @@ public class CpuModel
 
     /**
      * Return an object CPU that is associated with the identifier in the database
-     * @param iIdentifier
+     * @param iIdentifier - identifier to the CPU to retrieve
      * @return - CPU object that was filled or null if not filled
      */
     public static CPU getCpu(int iIdentifier)

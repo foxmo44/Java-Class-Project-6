@@ -29,10 +29,11 @@ public class CpuView
     private TextField   txtPerformance;
     private Label       lblCpuName;
     private TextField   txtCpuName;
-    private Label       lblCpuIndex;
-    private TextField   txtCpuIndex;
+    private Label       lblCpuIdentifier;
+    private TextField   txtCpuIdentifier;
     private Button      btnSave;
     private Button      btnDelete;
+    private Button      btnClear;
     private Label       lblStatus;
 
     private ListView< CPU > listViewCpu;
@@ -60,8 +61,8 @@ public class CpuView
         mainStage.setScene( scene01 );
 
         lblCpuList = new Label( "CPU Information List" );
-        lblCpuIndex = new Label("CPU Index");
-        txtCpuIndex = new TextField("");
+        lblCpuIdentifier = new Label("CPU Identifier");
+        txtCpuIdentifier = new TextField("");
         lblCpuName = new Label("CPU Name");
         txtCpuName = new TextField("");
         lblPrice = new Label("Price");
@@ -70,11 +71,16 @@ public class CpuView
         txtPerformance = new TextField("");
         btnSave = new Button( "Save" );
         btnDelete = new Button("Delete");
+        btnClear = new Button("Clear");
         lblStatus = new Label("");
+
+        //Set the Cpu identifier box to readonly
+        txtCpuIdentifier.setDisable(true);
 
         //Set the button handler for the Save pushbutton
         btnSave.setOnAction( (wombat) -> { SaveButtonHandler(); } );
         btnDelete.setOnAction((wombat) -> {DeleteButtonHandler(); });
+        btnClear.setOnAction((wombat) -> {ClearButtonHandler(); });
 
         listViewCpu = new ListView< CPU >(  );
         listViewCpu.setPrefSize( 320, 160 );
@@ -96,8 +102,8 @@ public class CpuView
         //Add the controls to the dialog
         root.getChildren().addAll(  lblCpuList,
                                     listViewCpu,
-                                    lblCpuIndex,
-                                    txtCpuIndex,
+                                    lblCpuIdentifier,
+                                    txtCpuIdentifier,
                                     lblCpuName,
                                     txtCpuName,
                                     lblPerformance,
@@ -106,6 +112,7 @@ public class CpuView
                                     txtPrice,
                                     btnSave,
                                     btnDelete,
+                                    btnClear,
                                     lblStatus);
         mainStage.show();
     }
@@ -121,7 +128,7 @@ public class CpuView
             //If a valid CPU object then update the text boxes
             if (cpu.getValid() == true)
             {
-                txtCpuIndex.setText(Integer.toString(cpu.getIdentifier()));
+                txtCpuIdentifier.setText(Integer.toString(cpu.getIdentifier()));
 
                 String strPrice = String.format("%5.2f", cpu.getPrice());
                 txtPrice.setText(strPrice);
@@ -134,7 +141,7 @@ public class CpuView
         }
         else
         {
-            txtCpuIndex.setText("");
+            txtCpuIdentifier.setText("");
             txtPrice.setText("");
             txtCpuName.setText("");
             txtPerformance.setText("");
@@ -175,15 +182,18 @@ public class CpuView
         String  strStatus;
         CPU     cpu;
 
+        //Clear the status before the callback
+        lblStatus.setText("");
+
         //Save the CPU information via the controller
         if((txtCpuName.getText().isEmpty() == false) &&
            (txtPerformance.getText().isEmpty() == false) &&
            (txtPrice.getText().isEmpty() == false))
         {
             //Get the identifier number
-            if(txtCpuIndex.getText().isEmpty() == false)
+            if(txtCpuIdentifier.getText().isEmpty() == false)
             {
-                iIdentifier = Integer.parseInt(txtCpuIndex.getText());
+                iIdentifier = Integer.parseInt(txtCpuIdentifier.getText());
             }
 
             //Grab the data from the rest of the text fields
@@ -226,6 +236,21 @@ public class CpuView
 
     }
 
+
+    /**
+     * Clear the text fields
+     */
+    private void ClearButtonHandler()
+    {
+        //Clear the status before the callback
+        lblStatus.setText("");
+
+        txtCpuIdentifier.setText("");
+        txtPrice.setText("");
+        txtCpuName.setText("");
+        txtPerformance.setText("");
+    }
+
     /**
      * If the index is valid then delete the record from the database
      */
@@ -234,9 +259,12 @@ public class CpuView
         int iIdentifier;
         String strStatus;
 
-        if(txtCpuIndex.getText().isEmpty() == false)
+        //Clear the status before the callback
+        lblStatus.setText("");
+
+        if(txtCpuIdentifier.getText().isEmpty() == false)
         {
-            iIdentifier = Integer.parseInt(txtCpuIndex.getText());
+            iIdentifier = Integer.parseInt(txtCpuIdentifier.getText());
 
             cpuController.Delete(iIdentifier);
 

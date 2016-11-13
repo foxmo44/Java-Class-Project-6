@@ -38,6 +38,7 @@ public class CpuController
      * @param strCpuName - name of the CPU
      * @param iPerformance - performance of the CPU
      * @param dPrice - price of the CPU
+     * @return true if save was completed
      */
     public boolean Save(String strCpuName, int iPerformance, double dPrice)
     {
@@ -47,6 +48,7 @@ public class CpuController
     /**
      * Delete a record from the database
      * @param iIdentifier - Identifier of the record to delete
+     * @return true if delete was completed
      */
    public boolean Delete(int iIdentifier)
     {
@@ -69,7 +71,7 @@ public class CpuController
      * @param strCpuName - name of the CPU
      * @param iPerformance - performance of the CPU
      * @param dPrice - price of the CPU
-     * @return
+     * @return true if the update was successful
      */
     public boolean Update(int iIdentifier, String strCpuName, int iPerformance, double dPrice)
     {
@@ -78,6 +80,7 @@ public class CpuController
 
     /**
      * Get the latest cpu list from the Model
+     * @return Return a list of the CPUs
      */
     ArrayList< CPU > getCpuList()
     {
